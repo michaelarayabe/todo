@@ -36,5 +36,25 @@ function addTask(task) {
 
     deleteBtn.addEventListener('click', () => {
         todoList.removeChild(li);
-    })
+        saveTasks();
+    });
+
+    saveTasks();
 }
+
+function saveTasks(){
+    const tasks = [];
+    document.querySelectorAll('#todo-list li').forEach((li) => {
+        tasks.push(li.textContent.replace('Delete', '').trim());
+    });
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function loadTasks(){
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    tasks.forEach((task) => {
+        addTask(task);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', loadTasks);
